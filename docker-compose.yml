@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  db:
+    image: drupaldocker/mariadb
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'True'
+    volumes:
+      - db:/var/lib/mysql
+
+
+  proxy:
+    image: jwilder/nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx-proxy.conf:/etc/nginx/conf.d/nginx-proxy.conf:ro
+    ports:
+      - 80:80
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external:
+      name: proxy
+
+volumes:
+  db:
+    external: true
