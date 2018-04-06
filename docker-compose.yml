@@ -7,7 +7,15 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'True'
     volumes:
       - db:/var/lib/mysql
+    ports:
+      - 3306:3306
 
+  redis:
+    image: drupaldocker/redis
+    volumes:
+      - redis:/data
+    ports:
+      - 6379:6379
 
   proxy:
     image: jwilder/nginx-proxy
@@ -26,4 +34,6 @@ networks:
 
 volumes:
   db:
+    external: true
+  redis:
     external: true
